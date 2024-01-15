@@ -14,12 +14,12 @@ export const Card = ({ foodItems }) => {
   const finalPrice = qty * selectedOption;
   const handleAddToCart = async () => {
     let food = [];
-    console.log(data);
+
     const found = data.find((item) => {
       return item.id === _id && item.size === size;
     });
     if (found) {
-      console.log(size);
+     
       await dispatch({
         type: "UPDATE",
         id: _id,
@@ -44,7 +44,7 @@ export const Card = ({ foodItems }) => {
     //   }
     //   break;
     // }
-    console.log(food);
+
     // console.log(new Date());
     // if (food !== []) {
     //   if (food.size === size) {

@@ -6,12 +6,15 @@ export const Search = () => {
     const searchValue = e.target.elements.search.value;
 
     // console.log(e.target.elements.search.value);
-    await fetch(`http://localhost:5000/api/foodData?search=${searchValue}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await fetch(
+      `https://deliverfast.onrender.com/api/foodData?search=${searchValue}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   };
   return (
     <div className="d-flex justify-content-center">

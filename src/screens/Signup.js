@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Signup = () => {
+  const [checked, setChecked] = useState(false);
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
@@ -10,22 +12,27 @@ export const Signup = () => {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:5000/api/createuser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: credentials.name,
-        email: credentials.email,
-        password: credentials.password,
-        location: credentials.geolocation,
-      }),
-    });
+    const response = await fetch(
+      "https://deliverfast.onrender.com/api/createuser",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: credentials.name,
+          email: credentials.email,
+          password: credentials.password,
+          location: credentials.geolocation,
+        }),
+      }
+    );
     const json = await response.json();
-    console.log(json);
+
     if (!json.success) {
       alert("enter valid credentials");
+    } else if (json.success) {
+      alert("sign up successfull please login");
     }
   };
   const onChange = (e) => {
@@ -33,10 +40,10 @@ export const Signup = () => {
   };
   return (
     <>
-      <div class="container">
+      <div className="container mt-5">
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label for="name" className="form-label">
+            <label htmlFor="name" className="form-label">
               Name
             </label>
             <input
@@ -47,12 +54,9 @@ export const Signup = () => {
               className="form-control"
               id="exampleInputEmail1"
             />
-            <div id="emailHelp" className="form-text">
-              Your name
-            </div>
           </div>
           <div className="mb-3">
-            <label for="name" className="form-label">
+            <label htmlFor="name" className="form-label">
               address
             </label>
             <input
@@ -62,10 +66,9 @@ export const Signup = () => {
               type="text"
               className="form-control"
             />
-            <div className="form-text">Your name</div>
           </div>
           <div className="mb-3">
-            <label for="email" className="form-label">
+            <label htmlFor="email" className="form-label">
               Email address
             </label>
             <input
@@ -76,12 +79,9 @@ export const Signup = () => {
               value={credentials.email}
               onChange={onChange}
             />
-            <div className="form-text">
-              We'll never share your email with anyone else.
-            </div>
           </div>
           <div className="mb-3">
-            <label for="exampleInputPassword1" className="form-label">
+            <label htmlFor="exampleInputPassword1" className="form-label">
               Password
             </label>
             <input
@@ -93,17 +93,28 @@ export const Signup = () => {
             />
           </div>
           <div className="mb-3 form-check">
-            <input type="checkbox" className="form-check-input" />
-            <label className="form-check-label" for="exampleCheck1">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              onChange={() => setChecked(!checked)}
+            />
+            <label className="form-check-label" htmlFor="exampleCheck1">
               I agree to the terms and conditions
             </label>
           </div>
-          <button type="submit" className="m-3 btn btn-primary">
+          <button
+            disabled={checked ? false : true}
+            type="submit"
+            className="my-3 btn btn-primary"
+          >
             Submit
           </button>
-          <Link to={"/login"} className="m-3 btn btn-danger ">
+          <span className="ml-5">
             Already a user?
-          </Link>
+            <Link to={"/login"} className="m-3 btn btn-danger ">
+              Login
+            </Link>
+          </span>
         </form>
       </div>
     </>
